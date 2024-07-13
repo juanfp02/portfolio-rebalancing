@@ -88,36 +88,6 @@ class Portfolio(object):
             investment_values.iloc[i] = investment_values.iloc[i-1] * (1 + daily_returns.iloc[i])
 
         return investment_values
-
-    
-
-    def GetPortfStatistics(self, prices_df, weights,risk_free_rate):
-        
-        if prices_df is None and weights is None:
-            port_df = self.GetPortValue()
-        else:
-            weighted_prices_df = prices_df * self.Weights
-            port_df = weighted_prices_df.sum(axis=1)
-        
-        count = len(port_df)
-
-        # Calculate total return
-        rdt = (port_df.iloc[-1] / port_df.iloc[0]) - 1
-        
-        # Calculate returns
-        returns = port_df.pct_change().dropna()
-        
-        # Calculate annualized volatility
-        vol = np.std(returns)
-        vol_ann = vol * np.sqrt(252)
-        
-        # Calculate annualized return
-        ret_ann = np.power((1 + rdt), (365 / count)) - 1
-        
-        # Calculate Sharpe ratio
-        sharpe = (ret_ann - risk_free_rate) / vol_ann
-        
-        return float(ret_ann), float(vol_ann), float(sharpe)
     
     def End_value(self, prices_df, weights):
 
